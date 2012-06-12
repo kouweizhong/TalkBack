@@ -3,6 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalkBack", "TalkBack\TalkBack.csproj", "{6957C710-287C-46D6-9898-6C17DDB7DFA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalkBack35", "TalkBack3.5\TalkBack35.csproj", "{0DA18CF3-29B5-49C7-BB64-36DF67FF7EBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{D01C23E8-24CE-4946-997A-05FDB9F9E019}"
+	ProjectSection(SolutionItems) = preProject
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
+		TalkBack.snk = TalkBack.snk
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +21,10 @@ Global
 		{6957C710-287C-46D6-9898-6C17DDB7DFA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6957C710-287C-46D6-9898-6C17DDB7DFA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6957C710-287C-46D6-9898-6C17DDB7DFA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DA18CF3-29B5-49C7-BB64-36DF67FF7EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DA18CF3-29B5-49C7-BB64-36DF67FF7EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DA18CF3-29B5-49C7-BB64-36DF67FF7EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DA18CF3-29B5-49C7-BB64-36DF67FF7EBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
