@@ -10,7 +10,7 @@ namespace TalkBack
 
     public override bool IsInterestedIn(Message message)
     {
-      return message.GetType().IsSubclassOf(typeof (TMessage));
+      return typeof (TMessage).IsAssignableFrom(message.GetType());
     }
   }
 }
