@@ -15,6 +15,26 @@ namespace TalkBack
         subscriber.Notify(message);
     }
 
+    public void SendInfo(string message, params object[] args)
+    {
+      Send (new Message (MessageSeverity.Info, message, args));
+    }
+
+    public void SendDebug(string message, params object[] args)
+    {
+      Send (new Message (MessageSeverity.Debug, message, args));
+    }
+
+    public void SendWarning(string message, params object[] args)
+    {
+      Send (new Message (MessageSeverity.Warning, message, args));
+    }
+
+    public void SendError(string message, params object[] args)
+    {
+      Send (new Message (MessageSeverity.Error, message, args));
+    }
+
     private void Subscribe(ISubscriber subscriber)
     {
       _subscribers.Add(subscriber);
