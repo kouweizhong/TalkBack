@@ -20,6 +20,8 @@ namespace TalkBack
 {
   public static class TalkBackInvoke
   {
+    internal const string Prefix = "__tb:";
+
     private static readonly IMessageParticipiantContainer<IMessageReceiver> ReceiverContainer = new ReflectionMessageParticipiantContainer<IMessageReceiver>();
 
     public static void Process(string executablePath, string arguments, Action<Message> callback)
@@ -48,7 +50,7 @@ namespace TalkBack
 
     private static string BuildArguments(string arguments, string identifier, string config)
     {
-      return string.Format("{0}={1} {2}", identifier, config, arguments);
+      return string.Format("{3}{0}={1} {2}", identifier, config, arguments, Prefix);
     }
 
     public static void Action (Action<IMessageSender> action, Action<Message> callback)

@@ -1,4 +1,5 @@
-﻿using TalkBack;
+﻿using System;
+using TalkBack;
 
 namespace Called
 {
@@ -8,11 +9,18 @@ namespace Called
     {
       args = TalkBackChannel.Initialize(args);
 
-      TalkBackChannel.Out.SendInfo ("INFO");
-      TalkBackChannel.Out.SendError("ERROR");
-      TalkBackChannel.Out.SendDebug ("DEBUG");
-      TalkBackChannel.Out.SendWarning("WARNING");
-      TalkBackChannel.Out.SendMessage (new Message (MessageSeverity.Info, "ARGS " + string.Join (" ", args)));
+      if (TalkBackChannel.Out != null)
+      {
+        TalkBackChannel.Out.SendInfo ("INFO");
+        TalkBackChannel.Out.SendError ("ERROR");
+        TalkBackChannel.Out.SendDebug ("DEBUG");
+        TalkBackChannel.Out.SendWarning ("WARNING");
+        TalkBackChannel.Out.SendMessage (new Message (MessageSeverity.Info, "ARGS " + string.Join (" ", args)));
+      }
+      else
+      {
+        Console.WriteLine("Talkback was not requested");
+      }
     }
   }
 }
