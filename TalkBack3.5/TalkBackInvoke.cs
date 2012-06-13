@@ -56,5 +56,11 @@ namespace TalkBack
       var broker = new DelegateMessageBroker(callback);
       action(broker);
     } 
+
+    public static T Action<T> (Func<IMessageSender, T> action, Action<Message> callback)
+    {
+      var broker = new DelegateMessageBroker(callback);
+      return action(broker);
+    } 
   }
 }
