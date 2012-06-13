@@ -10,16 +10,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
-namespace TalkBack
+namespace TalkBack.Brokers.TextFile
 {
-  [Flags]
-  public enum MessageSeverity
+  public class TextFileMessageConfiguration
   {
-    Debug = 0x01,
-    Info = 0x02,
-    Warning = 0x04,
-    Error = 0x08
+    public string FilePath { get; private set; }
+
+    public TextFileMessageConfiguration(string stringConfiguration)
+    {
+      FilePath = stringConfiguration;
+    }
   }
 }

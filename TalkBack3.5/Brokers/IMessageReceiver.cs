@@ -12,14 +12,11 @@
 
 using System;
 
-namespace TalkBack
+namespace TalkBack.Brokers
 {
-  [Flags]
-  public enum MessageSeverity
+  public interface IMessageReceiver : IMessageParticipiant
   {
-    Debug = 0x01,
-    Info = 0x02,
-    Warning = 0x04,
-    Error = 0x08
+    void ProcessMessages();
+    void SetCallback(Action<Message> callback);
   }
 }

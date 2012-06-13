@@ -12,14 +12,17 @@
 
 using System;
 
-namespace TalkBack
+namespace TalkBack.Brokers
 {
-  [Flags]
-  public enum MessageSeverity
+  public class MessageParticipiantAttribute : Attribute
   {
-    Debug = 0x01,
-    Info = 0x02,
-    Warning = 0x04,
-    Error = 0x08
+    public string Identifier { get; private set; }
+    public Type ConfigurationType { get; private set; }
+
+    public MessageParticipiantAttribute(string communicationType, Type type)
+    {
+      Identifier = communicationType;
+      ConfigurationType = type;
+    }
   }
 }

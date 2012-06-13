@@ -10,16 +10,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
-namespace TalkBack
+namespace TalkBack.Brokers
 {
-  [Flags]
-  public enum MessageSeverity
+  public interface IMessageParticipiantContainer<out T>
   {
-    Debug = 0x01,
-    Info = 0x02,
-    Warning = 0x04,
-    Error = 0x08
+    T GetMessageParticipiant(string identifier, string configuration);
   }
 }

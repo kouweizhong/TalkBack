@@ -32,28 +32,46 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ISubscriber.cs" />
-    <Compile Include="ISubscriptionChannel.cs" />
-    <Compile Include="ITalkbackChannel.cs" />
+    <Compile Include="Brokers\Delegate\DelegateMessageBroker.cs" />
+    <Compile Include="Brokers\IMessageParticipiant.cs" />
+    <Compile Include="Brokers\IMessageReceiver.cs" />
+    <Compile Include="Brokers\MessageBroker.cs" />
+    <Compile Include="Brokers\IMessageSender.cs" />
+    <Compile Include="Brokers\MessageParticipiant.cs" />
+    <Compile Include="Brokers\MessageReceiver.cs" />
+    <Compile Include="Brokers\MessageSender.cs" />
+    <Compile Include="Brokers\TextFile\TextFileMessageReceiver.cs" />
+    <Compile Include="Brokers\TextFile\TextFileMessageSender.cs" />
+    <Compile Include="Brokers\XmlFile\XmlFileMessageConfiguration.cs" />
+    <Compile Include="Brokers\XmlFile\XmlFileMessageReceiver.cs" />
+    <Compile Include="Brokers\XmlFile\XmlFileMessageSender.cs" />
+    <Compile Include="Configuration\TalkBackConfiguration.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageSeverity.cs" />
+    <Compile Include="Brokers\MessageParticipiantAttribute.cs" />
+    <Compile Include="Brokers\ReflectionMessageParticipiantContainer.cs" />
+    <Compile Include="Brokers\TextFile\TextFileMessageConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SeverityRestrictedSubscriber.cs" />
-    <Compile Include="Subscriber.cs" />
-    <Compile Include="TalkbackChannel.cs" />
-    <Compile Include="TypeRestrictedSubscriber.cs" />
+    <Compile Include="Brokers\IMessageParticipiantContainer.cs" />
+    <Compile Include="TalkBackChannel.cs" />
+    <Compile Include="TalkBackInvoke.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TalkBack.snk">
       <Link>TalkBack.snk</Link>
     </None>
+    <None Include="TalkBack35.licenseheader" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

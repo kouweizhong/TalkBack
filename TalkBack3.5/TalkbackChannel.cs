@@ -1,58 +1,53 @@
+﻿// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using TalkBack.Brokers;
 
 namespace TalkBack
 {
-  public class TalkbackChannel : ITalkbackChannel, ISubscriptionChannel
+  public static class TalkBackChannel
   {
-    private readonly HashSet<ISubscriber> _subscribers =
-      new HashSet<ISubscriber> ();
-
-    public void Send(Message message)
+    private static readonly IMessageParticipiantContainer<IMessageSender> MessageParticipiantContainer = new ReflectionMessageParticipiantContainer<IMessageSender> ();
+    
+    public static string[] Initialize(string[] args)
     {
-      foreach(var subscriber in _subscribers.Where(s => s.IsInterestedIn(message)))
-        subscriber.Notify(message);
+      _out = BuildMessageSink(args.First());
+
+      AppDomain.CurrentDomain.ProcessExit += (sender, eventArgs) => ((MessageParticipiant) _out).Dispose ();
+
+      return args.Skip(1).ToArray();
+    }
+    
+    private static IMessageSender BuildMessageSink(string talkBackConfig)
+    {
+      if (!talkBackConfig.Contains("="))
+        throw new ArgumentException(string.Format("Invalid TalkBack configuration '{0}'", talkBackConfig), "talkBackConfig");
+
+      var split = talkBackConfig.Split('=');
+
+      return MessageParticipiantContainer.GetMessageParticipiant(split[0], split[1]);
     }
 
-    public void SendInfo(string message, params object[] args)
+    private static IMessageSender _out;
+    public static IMessageSender Out
     {
-      Send (new Message (MessageSeverity.Info, message, args));
-    }
-
-    public void SendDebug(string message, params object[] args)
-    {
-      Send (new Message (MessageSeverity.Debug, message, args));
-    }
-
-    public void SendWarning(string message, params object[] args)
-    {
-      Send (new Message (MessageSeverity.Warning, message, args));
-    }
-
-    public void SendError(string message, params object[] args)
-    {
-      Send (new Message (MessageSeverity.Error, message, args));
-    }
-
-    private void Subscribe(ISubscriber subscriber)
-    {
-      _subscribers.Add(subscriber);
-    }
-
-    public void Subscribe<TMessage>(Action<TMessage> callback) where TMessage : Message
-    {
-      Subscribe(new TypeRestrictedSubscriber<TMessage>(callback));
-    }
-
-    public void Subscribe(Action<Message> callback, MessageSeverity interestingSeverities)
-    {
-      Subscribe(new SeverityRestrictedSubscriber(callback, interestingSeverities));
-    }
-
-    public void Unsubscribe<TMessage>(Action<TMessage> callback) where TMessage : Message
-    {
-      _subscribers.Remove(_subscribers.OfType<Subscriber<TMessage>>().Single(s => s.Callback == callback));
+      get
+      {
+        if (_out == null)
+          throw new InvalidOperationException("TalkBack was not initialized!");
+        return _out;
+      }
     }
   }
 }

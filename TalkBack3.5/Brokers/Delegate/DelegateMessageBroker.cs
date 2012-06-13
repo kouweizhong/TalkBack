@@ -1,4 +1,4 @@
-// Licensed under the Apache License, Version 2.0 (the "License");
+﻿// Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
@@ -12,14 +12,17 @@
 
 using System;
 
-namespace TalkBack
+namespace TalkBack.Brokers.Delegate
 {
-  [Flags]
-  public enum MessageSeverity
+  public class DelegateMessageBroker : MessageBroker
   {
-    Debug = 0x01,
-    Info = 0x02,
-    Warning = 0x04,
-    Error = 0x08
+    public DelegateMessageBroker(Action<Message> callback) : base(callback)
+    {
+    }
+
+    public override void SendMessage(Message message)
+    {
+      OnMessage(message);
+    }
   }
 }
