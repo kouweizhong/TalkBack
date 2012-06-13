@@ -10,12 +10,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
+using System.IO;
 
-[assembly: AssemblyCompany ("")]
-[assembly: AssemblyProduct ("TalkBack")]
-[assembly: AssemblyCopyright ("Copyright ©  2012")]
-[assembly: AssemblyTrademark ("")]
+namespace TalkBack.Brokers.FileBased
+{
+  public abstract class FileMessageSender : MessageSender
+  {
+    protected string FilePath { get; private set; }
+    protected Stream FileStream { get; private set; }
 
-[assembly: AssemblyVersion ("0.6.1.0")]
-[assembly: AssemblyFileVersion ("0.6.1.0")]
+    protected FileMessageSender(FileMessageConfiguration configuration)
+    {
+      FilePath = configuration.FilePath;
+      FileStream = File.Create(configuration.FilePath);
+    }
+
+    protected override void Close ()
+    {
+      FileStream.Close();
+    }
+  }
+}

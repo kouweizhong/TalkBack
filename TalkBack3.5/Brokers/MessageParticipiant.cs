@@ -27,6 +27,11 @@ namespace TalkBack.Brokers
       Dispose(false);
     }
 
+    protected virtual void Close()
+    {
+      
+    }
+
     protected virtual void DisposeManagedResources()
     {
       
@@ -39,6 +44,8 @@ namespace TalkBack.Brokers
 
     private void Dispose(bool disposing)
     {
+      Close();
+
       if (disposing)
         DisposeManagedResources();
 

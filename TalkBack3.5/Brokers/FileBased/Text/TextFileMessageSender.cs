@@ -10,34 +10,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml;
+using System.IO;
 
-namespace TalkBack.Brokers.XmlFile
+namespace TalkBack.Brokers.FileBased.Text
 {
-  [MessageParticipiant ("xmlFile", typeof (XmlFileMessageConfiguration))]
-  public class XmlFileMessageSender : MessageSender
+  [MessageParticipiant ("textFile", typeof (FileMessageConfiguration))]
+  public class TextFileMessageSender : FileMessageSender
   {
-    private readonly XmlWriter _writer;
+    private readonly StreamWriter _writer;
 
-    public XmlFileMessageSender (XmlFileMessageConfiguration configuration)
+    public TextFileMessageSender (FileMessageConfiguration configuration) : base(configuration)
     {
-      _writer = XmlWriter.Create (configuration.FilePath);
-      _writer.WriteStartDocument();
-      _writer.WriteStartElement("Messages");
+      _writer = File.CreateText(FilePath);
+      _writer.AutoFlush = true;
     }
 
     public override void SendMessage(Message message)
     {
-      _writer.WriteElementString(message.Severity.ToString(), message.Text);
-      _writer.Flush();
+      _writer.WriteLine (string.Format ("{0}:{1}", message.Severity, message.Text));
     }
 
     protected override void DisposeManagedResources ()
     {
-      _writer.Flush();
-      _writer.WriteEndElement();
-      _writer.WriteEndDocument();
-      _writer.Close();
+      _writer.Dispose();
     }
   }
 }

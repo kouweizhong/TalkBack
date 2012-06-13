@@ -10,15 +10,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace TalkBack.Brokers.XmlFile
+using System.IO;
+
+namespace TalkBack.Brokers.FileBased
 {
-  public class XmlFileMessageConfiguration
+  public class FileMessageConfiguration
   {
     public string FilePath { get; private set; }
 
-    public XmlFileMessageConfiguration(string stringConfiguration)
+    public FileMessageConfiguration(string stringConfiguration)
     {
-      FilePath = stringConfiguration;
+      FilePath = stringConfiguration == "${temp}" ? GetTempFile() : stringConfiguration;
+    }
+
+    private string GetTempFile()
+    {
+      return Path.Combine(Path.GetTempPath(), "TalkBack.txt");
     }
   }
 }

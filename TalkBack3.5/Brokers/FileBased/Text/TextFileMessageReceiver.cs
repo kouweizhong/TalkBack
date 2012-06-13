@@ -13,21 +13,18 @@
 using System;
 using System.IO;
 
-namespace TalkBack.Brokers.TextFile
+namespace TalkBack.Brokers.FileBased.Text
 {
-  [MessageParticipiant ("textFile", typeof (TextFileMessageConfiguration))]
-  public class TextFileMessageReceiver : MessageReceiver
+  [MessageParticipiant ("textFile", typeof (FileMessageConfiguration))]
+  public class TextFileMessageReceiver : FileMessageReceiver
   {
-    private readonly TextFileMessageConfiguration _configuration;
-
-    public TextFileMessageReceiver (TextFileMessageConfiguration configuration)
+    public TextFileMessageReceiver (FileMessageConfiguration configuration) : base(configuration)
     {
-      _configuration = configuration;
     }
 
     public override void ProcessMessages()
     {
-      var lines = File.ReadAllLines(_configuration.FilePath);
+      var lines = File.ReadAllLines(FilePath);
 
       foreach (var line in lines)
       {

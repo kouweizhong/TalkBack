@@ -18,21 +18,26 @@ namespace TalkBack.Configuration
   {
     public static TalkBackConfiguration Configuration
     {
-      get { return ConfigurationManager.GetSection ("talkBack") as TalkBackConfiguration; }
+      get { return ConfigurationManager.GetSection("talkBack") as TalkBackConfiguration ?? GetDefaultConfig(); }
     }
 
-    [ConfigurationProperty ("identifier", IsRequired = true)]
+    [ConfigurationProperty("identifier", IsRequired = true)]
     public string Identifier
     {
       get { return (string) this["identifier"]; }
       set { this["identifier"] = value; }
     }
 
-    [ConfigurationProperty ("options", IsRequired = true)]
+    [ConfigurationProperty("options", IsRequired = true)]
     public string Options
     {
       get { return (string) this["options"]; }
       set { this["options"] = value; }
+    }
+
+    private static TalkBackConfiguration GetDefaultConfig()
+    {
+      return new TalkBackConfiguration {Identifier = "xmlFile", Options = "${temp}"};
     }
   }
 }

@@ -10,15 +10,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace TalkBack.Brokers.TextFile
-{
-  public class TextFileMessageConfiguration
-  {
-    public string FilePath { get; private set; }
+using System.IO;
 
-    public TextFileMessageConfiguration(string stringConfiguration)
+namespace TalkBack.Brokers.FileBased
+{
+  public abstract class FileMessageReceiver : MessageReceiver
+  {
+    protected string FilePath { get; private set; }
+    protected Stream FileStream { get; private set; }
+
+    protected FileMessageReceiver (FileMessageConfiguration configuration)
     {
-      FilePath = stringConfiguration;
+      FilePath = configuration.FilePath;
+      FileStream = File.OpenRead(configuration.FilePath);
+    }
+
+    protected override void Close ()
+    {
+      FileStream.Close();
+      File.Delete(FilePath);
     }
   }
 }
