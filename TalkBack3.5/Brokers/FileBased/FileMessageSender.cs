@@ -16,22 +16,24 @@ namespace TalkBack.Brokers.FileBased
 {
   public abstract class FileMessageSender : MessageSender
   {
-    protected string FilePath { get; private set; }
-    protected Stream FileStream { get; private set; }
-
     protected FileMessageSender(FileMessageConfiguration configuration)
     {
       FilePath = configuration.FilePath;
       FileStream = File.Create(configuration.FilePath);
     }
 
-    protected virtual void OnClosing ()
-    { }
+    protected string FilePath { get; private set; }
+    protected Stream FileStream { get; private set; }
 
-    protected override void Close ()
+    protected virtual void OnClosing()
+    {
+    }
+
+    protected override sealed void Close()
     {
       OnClosing();
-      FileStream.Close();
+      if (FileStream != null)
+        FileStream.Close();
     }
   }
 }

@@ -25,10 +25,16 @@ namespace TalkBack.Brokers.FileBased
       FileStream = File.OpenRead(configuration.FilePath);
     }
 
-    protected override void Close ()
+    protected virtual void OnClosing ()
     {
-      FileStream.Close();
-      File.Delete(FilePath);
+    }
+
+    protected override sealed void Close ()
+    {
+      OnClosing ();
+      if (FileStream != null)
+        FileStream.Close ();
+      File.Delete (FilePath);
     }
   }
 }

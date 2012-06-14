@@ -21,7 +21,7 @@ namespace TalkBack
   {
     private static readonly IMessageParticipiantContainer<IMessageSender> MessageParticipiantContainer = new ReflectionMessageParticipiantContainer<IMessageSender> ();
 
-    private static readonly Regex s_cliPattern = new Regex(string.Format("^{0}(.+?)=(.+)$", Regex.Escape(TalkBackInvoke.Prefix)));
+    private static readonly Regex CliPattern = new Regex(string.Format("^{0}(.+?)=(.+)$", Regex.Escape(TalkBackInvoke.Prefix)));
     
     public static string[] Initialize(string[] args)
     {
@@ -37,14 +37,14 @@ namespace TalkBack
     
     private static IMessageSender BuildMessageSink(string talkBackConfig)
     {
-      var match = s_cliPattern.Match(talkBackConfig);
+      var match = CliPattern.Match(talkBackConfig);
 
       if(!match.Success)
       {
         if (talkBackConfig.StartsWith(TalkBackInvoke.Prefix))
           throw new ArgumentException(string.Format("Invalid TalkBack configuration '{0}'", talkBackConfig), "talkBackConfig");
-        else
-          return null;
+        
+        return null;
       }
 
       return MessageParticipiantContainer.GetMessageParticipiant(match.Groups[1].Value, match.Groups[2].Value);
