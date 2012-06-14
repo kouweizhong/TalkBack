@@ -25,6 +25,9 @@ namespace TalkBack
     
     public static string[] Initialize(string[] args)
     {
+      if (args.Length < 1)
+        return args;
+
       Out = BuildMessageSink(args.First());
 
       if (Out == null)
