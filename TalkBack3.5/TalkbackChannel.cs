@@ -12,6 +12,7 @@
 
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TalkBack.Brokers;
 
 namespace TalkBack
@@ -19,35 +20,36 @@ namespace TalkBack
   public static class TalkBackChannel
   {
     private static readonly IMessageParticipiantContainer<IMessageSender> MessageParticipiantContainer = new ReflectionMessageParticipiantContainer<IMessageSender> ();
+
+    private static readonly Regex s_cliPattern = new Regex(string.Format("^{0}(.+?)=(.+)$", Regex.Escape(TalkBackInvoke.Prefix)));
     
     public static string[] Initialize(string[] args)
     {
-      _out = BuildMessageSink(args.First());
+      Out = BuildMessageSink(args.First());
 
-      AppDomain.CurrentDomain.ProcessExit += (sender, eventArgs) => ((MessageParticipiant) _out).Dispose ();
+      if (Out == null)
+        return args;
+
+      AppDomain.CurrentDomain.ProcessExit += (sender, eventArgs) => ((MessageParticipiant) Out).Dispose ();
 
       return args.Skip(1).ToArray();
     }
     
     private static IMessageSender BuildMessageSink(string talkBackConfig)
     {
-      if (!talkBackConfig.Contains("="))
-        throw new ArgumentException(string.Format("Invalid TalkBack configuration '{0}'", talkBackConfig), "talkBackConfig");
+      var match = s_cliPattern.Match(talkBackConfig);
 
-      var split = talkBackConfig.Split('=');
-
-      return MessageParticipiantContainer.GetMessageParticipiant(split[0], split[1]);
-    }
-
-    private static IMessageSender _out;
-    public static IMessageSender Out
-    {
-      get
+      if(!match.Success)
       {
-        if (_out == null)
-          throw new InvalidOperationException("TalkBack was not initialized!");
-        return _out;
+        if (talkBackConfig.StartsWith(TalkBackInvoke.Prefix))
+          throw new ArgumentException(string.Format("Invalid TalkBack configuration '{0}'", talkBackConfig), "talkBackConfig");
+        else
+          return null;
       }
+
+      return MessageParticipiantContainer.GetMessageParticipiant(match.Groups[1].Value, match.Groups[2].Value);
     }
+
+    public static IMessageSender Out { get; private set; }
   }
 }

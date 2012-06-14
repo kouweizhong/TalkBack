@@ -32,10 +32,10 @@ namespace TalkBack.Brokers.FileBased.Xml
       _writer.Flush();
     }
 
-    protected override void Close ()
+    protected override void OnClosing ()
     {
-      base.Close ();
-      _writer.Close();
+      _writer.WriteEndElement();
+      _writer.Close ();
     }
   }
 }

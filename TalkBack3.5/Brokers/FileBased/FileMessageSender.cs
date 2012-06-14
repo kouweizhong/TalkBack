@@ -25,8 +25,12 @@ namespace TalkBack.Brokers.FileBased
       FileStream = File.Create(configuration.FilePath);
     }
 
+    protected virtual void OnClosing ()
+    { }
+
     protected override void Close ()
     {
+      OnClosing();
       FileStream.Close();
     }
   }
