@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0DA18CF3-29B5-49C7-BB64-36DF67FF7EBF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TalkBack</RootNamespace>
+    <AssemblyName>TalkBack</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\TalkBack.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Brokers\Delegate\DelegateMessageBroker.cs" />
+    <Compile Include="Brokers\FileBased\FileMessageConfiguration.cs" />
+    <Compile Include="Brokers\FileBased\FileMessageReceiver.cs" />
+    <Compile Include="Brokers\FileBased\FileMessageSender.cs" />
+    <Compile Include="Brokers\IMessageParticipiant.cs" />
+    <Compile Include="Brokers\IMessageReceiver.cs" />
+    <Compile Include="Brokers\MessageBroker.cs" />
+    <Compile Include="Brokers\IMessageSender.cs" />
+    <Compile Include="Brokers\MessageParticipiant.cs" />
+    <Compile Include="Brokers\MessageReceiver.cs" />
+    <Compile Include="Brokers\MessageSender.cs" />
+    <Compile Include="Brokers\FileBased\Text\TextFileMessageReceiver.cs" />
+    <Compile Include="Brokers\FileBased\Text\TextFileMessageSender.cs" />
+    <Compile Include="Brokers\FileBased\Xml\XmlFileMessageReceiver.cs" />
+    <Compile Include="Brokers\FileBased\Xml\XmlFileMessageSender.cs" />
+    <Compile Include="Configuration\TalkBackConfiguration.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="MessageSeverity.cs" />
+    <Compile Include="Brokers\MessageParticipiantAttribute.cs" />
+    <Compile Include="Brokers\ReflectionMessageParticipiantContainer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Brokers\IMessageParticipiantContainer.cs" />
+    <Compile Include="TalkBackChannel.cs" />
+    <Compile Include="TalkBackInvoke.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\TalkBack.snk">
+      <Link>TalkBack.snk</Link>
+    </None>
+    <None Include="TalkBack35.licenseheader" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
