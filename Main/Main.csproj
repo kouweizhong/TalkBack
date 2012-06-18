@@ -42,13 +42,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Called\Called.csproj">
+      <Project>{1B4C4322-EC0D-4530-92C0-A365760DF7C2}</Project>
+      <Name>Called</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TalkBack3.5\TalkBack35.csproj">
       <Project>{0DA18CF3-29B5-49C7-BB64-36DF67FF7EBF}</Project>
       <Name>TalkBack35</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="qwer" />
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

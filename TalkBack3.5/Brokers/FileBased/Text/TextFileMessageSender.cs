@@ -11,28 +11,30 @@
 // limitations under the License.
 
 using System.IO;
+using TalkBack.Serializers;
 
 namespace TalkBack.Brokers.FileBased.Text
 {
-  [MessageParticipiant ("textFile", typeof (FileMessageConfiguration))]
+  [MessageParticipiant ("txt", typeof (TextFileParticipiantConfiguration))]
   public class TextFileMessageSender : FileMessageSender
   {
     private readonly StreamWriter _writer;
+    private readonly StringMessageSerializer _serializer;
 
-    public TextFileMessageSender (FileMessageConfiguration configuration) : base(configuration)
+    public TextFileMessageSender (TextFileParticipiantConfiguration configuration) : base(configuration)
     {
-      _writer = File.CreateText(FilePath);
-      _writer.AutoFlush = true;
+      _writer = new StreamWriter(Stream) {AutoFlush = true};
+      _serializer = new StringMessageSerializer(configuration.Separator);
     }
 
     public override void SendMessage(Message message)
     {
-      _writer.WriteLine (string.Format ("{0}:{1}", message.Severity, message.Text));
+      _writer.WriteLine(_serializer.Serialize(message));
     }
 
-    protected override void DisposeManagedResources ()
+    protected override void OnClosing ()
     {
-      _writer.Dispose();
+      _writer.Close();
     }
   }
 }

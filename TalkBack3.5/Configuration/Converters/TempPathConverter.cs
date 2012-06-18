@@ -11,14 +11,25 @@
 // limitations under the License.
 
 using System;
+using System.IO;
 
-namespace TalkBack.Brokers
+namespace TalkBack.Configuration.Converters
 {
-  public interface IMessageReceiver : IMessageParticipiant
+  public class TempPathConverter : Converter<FileInfo>
   {
-    void SetCallback(Action<Message> callback);
-    void OnStartSender();
-    void OnEndSender();
-    string BuildSenderConfig();
+    protected override FileInfo ConvertInternal(string value)
+    {
+      return value == "${temp}" ? GetTempFile() : new FileInfo(value);
+    }
+
+    protected override string ConvertBackInternal(FileInfo obj)
+    {
+      return obj.FullName;
+    }
+
+    private FileInfo GetTempFile ()
+    {
+      return new FileInfo(Path.Combine(Path.GetTempPath(), string.Format("TalkBack{0}.txt", DateTime.Now.Ticks)));
+    }
   }
 }

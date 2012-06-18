@@ -14,14 +14,14 @@ using System.Xml;
 
 namespace TalkBack.Brokers.FileBased.Xml
 {
-  [MessageParticipiant ("xmlFile", typeof (FileMessageConfiguration))]
+  [MessageParticipiant ("xml", typeof (FileParticipiantConfiguration))]
   public class XmlFileMessageSender : FileMessageSender
   {
     private readonly XmlWriter _writer;
 
-    public XmlFileMessageSender (FileMessageConfiguration configuration) : base(configuration)
+    public XmlFileMessageSender (FileParticipiantConfiguration configuration) : base(configuration)
     {
-      _writer = XmlWriter.Create (FileStream);
+      _writer = XmlWriter.Create (Stream);
       _writer.WriteStartDocument();
       _writer.WriteStartElement("Messages");
     }

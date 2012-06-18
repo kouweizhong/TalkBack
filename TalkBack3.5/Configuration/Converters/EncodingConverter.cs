@@ -10,15 +10,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
+using System.Text;
 
-namespace TalkBack.Brokers
+namespace TalkBack.Configuration.Converters
 {
-  public interface IMessageReceiver : IMessageParticipiant
+  public class EncodingConverter : Converter<Encoding>
   {
-    void SetCallback(Action<Message> callback);
-    void OnStartSender();
-    void OnEndSender();
-    string BuildSenderConfig();
+    protected override Encoding ConvertInternal(string value)
+    {
+      return Encoding.GetEncoding(value);
+    }
+
+    protected override string ConvertBackInternal(Encoding obj)
+    {
+      return obj.EncodingName;
+    }
   }
 }

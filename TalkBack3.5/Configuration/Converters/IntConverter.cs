@@ -10,22 +10,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.IO;
-
-namespace TalkBack.Brokers.FileBased
+namespace TalkBack.Configuration.Converters
 {
-  public class FileMessageConfiguration
+  public class IntConverter : Converter<int>
   {
-    public string FilePath { get; private set; }
-
-    public FileMessageConfiguration(string stringConfiguration)
+    protected override int ConvertInternal(string value)
     {
-      FilePath = stringConfiguration == "${temp}" ? GetTempFile() : stringConfiguration;
+      return int.Parse(value);
     }
 
-    private string GetTempFile()
+    protected override string ConvertBackInternal(int obj)
     {
-      return Path.Combine(Path.GetTempPath(), "TalkBack.txt");
+      return obj.ToString();
     }
   }
 }

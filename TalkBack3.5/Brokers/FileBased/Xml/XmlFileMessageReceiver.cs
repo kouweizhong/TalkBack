@@ -11,24 +11,25 @@
 // limitations under the License.
 
 using System;
+using System.IO;
 using System.Xml;
 
 namespace TalkBack.Brokers.FileBased.Xml
 {
-  [MessageParticipiant ("xmlFile", typeof (FileMessageConfiguration))]
+  [MessageParticipiant ("xml", typeof (FileParticipiantConfiguration))]
   public class XmlFileMessageReceiver : FileMessageReceiver
   {
-    public XmlFileMessageReceiver (FileMessageConfiguration configuration) : base(configuration)
+    public XmlFileMessageReceiver (FileParticipiantConfiguration configuration) : base(configuration)
     {
     }
 
-    public override void ProcessMessages()
+    protected override void ProcessFile(Stream stream)
     {
-      using (var reader = XmlReader.Create (FileStream))
+      using (var reader = XmlReader.Create (stream))
         while (reader.Read ())
           if (reader.NodeType == XmlNodeType.Element && reader.Depth == 1)
-            OnMessage(new Message((MessageSeverity) Enum.Parse(typeof (MessageSeverity), reader.Name),
-                                  reader.ReadString()));
+            OnMessage (new Message ((MessageSeverity) Enum.Parse (typeof (MessageSeverity), reader.Name),
+                                  reader.ReadString ()));
     }
   }
 }

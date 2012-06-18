@@ -10,15 +10,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
-namespace TalkBack.Brokers
+namespace TalkBack.Configuration.Converters
 {
-  public interface IMessageReceiver : IMessageParticipiant
+  public abstract class Converter<T> : IConverter
   {
-    void SetCallback(Action<Message> callback);
-    void OnStartSender();
-    void OnEndSender();
-    string BuildSenderConfig();
+    public object Convert(string value)
+    {
+      return ConvertInternal(value);
+    }
+
+    public string ConvertBack(object obj)
+    {
+      return ConvertBackInternal((T) obj);
+    }
+
+    protected abstract T ConvertInternal(string value);
+    protected abstract string ConvertBackInternal(T obj);
   }
 }

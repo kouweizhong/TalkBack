@@ -21,24 +21,24 @@ namespace TalkBack
   {
     private static readonly IMessageParticipiantContainer<IMessageSender> MessageParticipiantContainer = new ReflectionMessageParticipiantContainer<IMessageSender> ();
 
-    private static readonly Regex CliPattern = new Regex(string.Format("^{0}(.+?)=(.+)$", Regex.Escape(TalkBackInvoke.Prefix)));
+    private static readonly Regex CliPattern = new Regex(string.Format("^{0}(.+?)-(.+)$", Regex.Escape(TalkBackInvoke.Prefix)));
     
     public static string[] Initialize(string[] args)
     {
       if (args.Length < 1)
         return args;
 
-      Out = BuildMessageSink(args.First());
+      Out = BuildMessageSender(args.First());
 
       if (Out == null)
         return args;
 
-      AppDomain.CurrentDomain.ProcessExit += (sender, eventArgs) => ((MessageParticipiant) Out).Dispose ();
+      AppDomain.CurrentDomain.ProcessExit += (sender, eventArgs) => ((IDisposable) Out).Dispose ();
 
       return args.Skip(1).ToArray();
     }
     
-    private static IMessageSender BuildMessageSink(string talkBackConfig)
+    private static IMessageSender BuildMessageSender(string talkBackConfig)
     {
       var match = CliPattern.Match(talkBackConfig);
 

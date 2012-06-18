@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TalkBack;
 
 namespace Called
@@ -7,6 +8,8 @@ namespace Called
   {
     static void Main (string[] args)
     {
+      Console.WriteLine(args.Aggregate((a, b) => a + " " + b));
+
       args = TalkBackChannel.Initialize(args);
 
       if (TalkBackChannel.Out != null)

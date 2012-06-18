@@ -16,14 +16,26 @@ namespace TalkBack.Brokers.FileBased
 {
   public abstract class FileMessageReceiver : MessageReceiver
   {
-    protected string FilePath { get; private set; }
-    protected Stream FileStream { get; private set; }
+    private readonly FileParticipiantConfiguration _configuration;
+    private Stream _stream;
 
-    protected FileMessageReceiver (FileMessageConfiguration configuration)
+    protected FileMessageReceiver (FileParticipiantConfiguration configuration)
     {
-      FilePath = configuration.FilePath;
-      FileStream = File.OpenRead(configuration.FilePath);
+      _configuration = configuration;
     }
+
+    public override void OnStartSender ()
+    {
+      _configuration.Path.Create().Close();
+    }
+
+    public override sealed void OnEndSender ()
+    {
+      _stream = _configuration.Path.OpenRead();
+      ProcessFile(_stream);
+    }
+
+    protected abstract void ProcessFile(Stream stream);
 
     protected virtual void OnClosing ()
     {
@@ -32,9 +44,14 @@ namespace TalkBack.Brokers.FileBased
     protected override sealed void Close ()
     {
       OnClosing ();
-      if (FileStream != null)
-        FileStream.Close ();
-      File.Delete (FilePath);
+      if (_stream != null)
+        _stream.Close ();
+      _configuration.Path.Delete();
+    }
+
+    public override string BuildSenderConfig ()
+    {
+      return _configuration.ToString();
     }
   }
 }

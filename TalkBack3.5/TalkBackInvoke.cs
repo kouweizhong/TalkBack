@@ -29,28 +29,29 @@ namespace TalkBack
       string identifier = TalkBackConfiguration.Configuration.Identifier;
       string config = TalkBackConfiguration.Configuration.Options;
 
+      var receiver = ReceiverContainer.GetMessageParticipiant (identifier, config);
+      receiver.SetCallback (callback);
+
       var process = new Process
                       {
                         StartInfo =
                           {
                             FileName = executablePath,
-                            Arguments = BuildArguments(arguments, identifier, config),
+                            Arguments = BuildArguments(arguments, identifier, receiver.BuildSenderConfig()),
                             UseShellExecute = false,
-                            CreateNoWindow = true
+                            CreateNoWindow = true,
                           }
                       };
 
+      receiver.OnStartSender();
       process.Start();
       process.WaitForExit();
-
-      var receiver = ReceiverContainer.GetMessageParticipiant (identifier, config);
-      receiver.SetCallback (callback);
-      receiver.ProcessMessages();
+      receiver.OnEndSender();
     }
 
     private static string BuildArguments(string arguments, string identifier, string config)
     {
-      return string.Format("{3}{0}={1} {2}", identifier, config, arguments, Prefix);
+      return string.Format("{3}{0}-{1} {2}", identifier, config, arguments, Prefix);
     }
 
     public static void Action (Action<IMessageSender> action, Action<Message> callback)

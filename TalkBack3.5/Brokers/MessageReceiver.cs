@@ -23,11 +23,21 @@ namespace TalkBack.Brokers
       _callback(message);
     }
 
-    public abstract void ProcessMessages();
-
     public void SetCallback(Action<Message> callback)
     {
       _callback = callback;
     }
+
+    public virtual void OnStartSender()
+    {
+      
+    }
+
+    public virtual void OnEndSender()
+    {
+      
+    }
+
+    public abstract string BuildSenderConfig();
   }
 }

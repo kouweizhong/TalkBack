@@ -10,27 +10,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.IO;
+using TalkBack.Serializers;
 
 namespace TalkBack.Brokers.FileBased.Text
 {
-  [MessageParticipiant ("textFile", typeof (FileMessageConfiguration))]
+  [MessageParticipiant ("txt", typeof (TextFileParticipiantConfiguration))]
   public class TextFileMessageReceiver : FileMessageReceiver
   {
-    public TextFileMessageReceiver (FileMessageConfiguration configuration) : base(configuration)
+    private readonly StringMessageSerializer _serializer;
+    private new readonly TextFileParticipiantConfiguration _configuration;
+
+    public TextFileMessageReceiver (TextFileParticipiantConfiguration configuration) : base(configuration)
     {
+      _configuration = configuration;
+      _serializer = new StringMessageSerializer(configuration.Separator);
     }
 
-    public override void ProcessMessages()
+    protected override void ProcessFile(Stream stream)
     {
-      var lines = File.ReadAllLines(FilePath);
+      var sr = new StreamReader(stream);
+      string line;
+      while ((line = sr.ReadLine ()) != null)
+        OnMessage(_serializer.Deserialize(line));
+    }
 
-      foreach (var line in lines)
-      {
-        var split = line.Split (':');
-        OnMessage (new Message ((MessageSeverity) Enum.Parse (typeof (MessageSeverity), split[0]), split[1]));
-      }
+    public override string BuildSenderConfig()
+    {
+      return _configuration.ToString();
     }
   }
 }

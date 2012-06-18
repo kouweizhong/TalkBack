@@ -10,15 +10,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
+using System.IO;
+using TalkBack.Configuration;
+using TalkBack.Configuration.Converters;
 
-namespace TalkBack.Brokers
+namespace TalkBack.Brokers.FileBased
 {
-  public interface IMessageReceiver : IMessageParticipiant
+  public class FileParticipiantConfiguration : ParticipiantConfiguration
   {
-    void SetCallback(Action<Message> callback);
-    void OnStartSender();
-    void OnEndSender();
-    string BuildSenderConfig();
+    [ConfigurationParameter ("path", Converter = typeof (TempPathConverter))]
+    public FileInfo Path { get; set; }
+
+    public FileParticipiantConfiguration(string stringConfiguration) : base(stringConfiguration)
+    {
+    }
+
+    public FileParticipiantConfiguration (FileInfo path)
+    {
+      Path = path;
+    }
   }
 }

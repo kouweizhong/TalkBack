@@ -11,28 +11,22 @@
 // limitations under the License.
 
 using System.IO;
+using TalkBack.Configuration;
 
-namespace TalkBack.Brokers.FileBased
+namespace TalkBack.Brokers.FileBased.Text
 {
-  public abstract class FileMessageSender : MessageSender
+  public class TextFileParticipiantConfiguration : FileParticipiantConfiguration
   {
-    protected FileMessageSender(FileParticipiantConfiguration configuration)
-    {
-      Stream = configuration.Path.Create();
-    }
+    [ConfigurationParameter("sep")]
+    public string Separator { get; set; }
 
-    protected Stream Stream { get; private set; }
-
-    protected virtual void OnClosing()
+    public TextFileParticipiantConfiguration(string stringConfiguration) : base(stringConfiguration)
     {
     }
 
-    protected override sealed void Close()
+    public TextFileParticipiantConfiguration (FileInfo path, string separator): base(path)
     {
-      OnClosing();
-      if (Stream != null)
-        Stream.Close();
-      Stream.Dispose();
+      Separator = separator;
     }
   }
 }

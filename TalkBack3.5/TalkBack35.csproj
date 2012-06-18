@@ -48,9 +48,10 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Brokers\Delegate\DelegateMessageBroker.cs" />
-    <Compile Include="Brokers\FileBased\FileMessageConfiguration.cs" />
+    <Compile Include="Brokers\FileBased\FileParticipiantConfiguration.cs" />
     <Compile Include="Brokers\FileBased\FileMessageReceiver.cs" />
     <Compile Include="Brokers\FileBased\FileMessageSender.cs" />
+    <Compile Include="Brokers\FileBased\Text\TextFileParticipiantConfiguration.cs" />
     <Compile Include="Brokers\IMessageParticipiant.cs" />
     <Compile Include="Brokers\IMessageReceiver.cs" />
     <Compile Include="Brokers\MessageBroker.cs" />
@@ -62,13 +63,24 @@
     <Compile Include="Brokers\FileBased\Text\TextFileMessageSender.cs" />
     <Compile Include="Brokers\FileBased\Xml\XmlFileMessageReceiver.cs" />
     <Compile Include="Brokers\FileBased\Xml\XmlFileMessageSender.cs" />
+    <Compile Include="Brokers\Network\NetworkParticipiantConfiguration.cs" />
+    <Compile Include="Brokers\Network\Udp\UdpMessageReceiver.cs" />
+    <Compile Include="Brokers\Network\Udp\UdpMessageSender.cs" />
+    <Compile Include="Configuration\ConfigurationParameterAttribute.cs" />
+    <Compile Include="Configuration\Converters\Converter.cs" />
+    <Compile Include="Configuration\Converters\EncodingConverter.cs" />
+    <Compile Include="Configuration\Converters\IConverter.cs" />
+    <Compile Include="Configuration\Converters\IntConverter.cs" />
     <Compile Include="Configuration\TalkBackConfiguration.cs" />
+    <Compile Include="Configuration\Converters\TempPathConverter.cs" />
     <Compile Include="Message.cs" />
+    <Compile Include="Configuration\ParticipiantConfiguration.cs" />
     <Compile Include="MessageSeverity.cs" />
     <Compile Include="Brokers\MessageParticipiantAttribute.cs" />
     <Compile Include="Brokers\ReflectionMessageParticipiantContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Brokers\IMessageParticipiantContainer.cs" />
+    <Compile Include="Serializers\IMessageSerializer.cs" />
     <Compile Include="TalkBackChannel.cs" />
     <Compile Include="TalkBackInvoke.cs" />
   </ItemGroup>
@@ -78,7 +90,9 @@
     </None>
     <None Include="TalkBack35.licenseheader" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Brokers\Network\Tcp\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

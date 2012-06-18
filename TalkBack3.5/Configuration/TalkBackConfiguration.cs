@@ -37,7 +37,7 @@ namespace TalkBack.Configuration
 
     private static TalkBackConfiguration GetDefaultConfig()
     {
-      return new TalkBackConfiguration {Identifier = "xmlFile", Options = "${temp}"};
+      return new TalkBackConfiguration {Identifier = "xmlFile", Options = "path=${temp}"};
     }
   }
 }
