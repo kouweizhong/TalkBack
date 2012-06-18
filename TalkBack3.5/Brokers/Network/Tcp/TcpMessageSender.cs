@@ -16,29 +16,32 @@ using System.Net.Sockets;
 using System.Text;
 using TalkBack.Serializers;
 
-namespace TalkBack.Brokers.Network.Udp
+namespace TalkBack.Brokers.Network.Tcp
 {
-  [MessageParticipiant ("udp", typeof (NetworkParticipiantConfiguration))]
-  public class UdpMessageSender : MessageSender
+  [MessageParticipiant ("tcp", typeof (NetworkParticipiantConfiguration))]
+  public class TcpMessageSender : MessageSender
   {
-    private readonly UdpClient _client;
-    private readonly Encoding _encoding;
+    private readonly TcpClient _client;
     private readonly StringMessageSerializer _serializer;
-    private readonly IPEndPoint _serverEndPoint;
+    private readonly NetworkStream _stream;
+    private readonly Encoding _encoding;
 
-    public UdpMessageSender(NetworkParticipiantConfiguration configuration)
+    public TcpMessageSender(NetworkParticipiantConfiguration configuration)
     {
-      _client = new UdpClient (0);
       _encoding = configuration.Encoding;
+      _client = new TcpClient (new IPEndPoint(IPAddress.Any, 0));
+      _client.Connect(new IPEndPoint(IPAddress.Loopback, configuration.Port));
+      _stream = _client.GetStream();
       _serializer = new StringMessageSerializer (configuration.Separator);
-      _serverEndPoint = new IPEndPoint(IPAddress.Loopback, configuration.Port);
     }
 
     public override void SendMessage(Message message)
     {
-      var data = _encoding.GetBytes((string) _serializer.Serialize(message));
-      
-      _client.Send(data, data.Length, _serverEndPoint);
+      var messageString = (string) _serializer.Serialize(message);
+      var data = _encoding.GetBytes(messageString);
+      var length = BitConverter.GetBytes(_encoding.GetByteCount(messageString));
+      _stream.Write(length, 0, length.Length);
+      _stream.Write(data, 0, data.Length);
     }
 
     protected override void DisposeManagedResources ()

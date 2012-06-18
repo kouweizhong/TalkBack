@@ -40,12 +40,22 @@ namespace TalkBack
                             Arguments = BuildArguments(arguments, identifier, receiver.BuildSenderConfig()),
                             UseShellExecute = false,
                             CreateNoWindow = true,
+#if DEBUG
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true
+#endif
                           }
                       };
 
       receiver.OnStartSender();
       process.Start();
       process.WaitForExit();
+
+#if DEBUG
+      Console.WriteLine(process.StandardOutput.ReadToEnd());
+      Console.Error.WriteLine(process.StandardOutput.ReadToEnd());
+#endif
+
       receiver.OnEndSender();
     }
 

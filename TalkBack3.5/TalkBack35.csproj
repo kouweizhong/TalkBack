@@ -64,6 +64,8 @@
     <Compile Include="Brokers\FileBased\Xml\XmlFileMessageReceiver.cs" />
     <Compile Include="Brokers\FileBased\Xml\XmlFileMessageSender.cs" />
     <Compile Include="Brokers\Network\NetworkParticipiantConfiguration.cs" />
+    <Compile Include="Brokers\Network\Tcp\TcpMessageReceiver.cs" />
+    <Compile Include="Brokers\Network\Tcp\TcpMessageSender.cs" />
     <Compile Include="Brokers\Network\Udp\UdpMessageReceiver.cs" />
     <Compile Include="Brokers\Network\Udp\UdpMessageSender.cs" />
     <Compile Include="Configuration\ConfigurationParameterAttribute.cs" />
@@ -90,9 +92,7 @@
     </None>
     <None Include="TalkBack35.licenseheader" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Brokers\Network\Tcp\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

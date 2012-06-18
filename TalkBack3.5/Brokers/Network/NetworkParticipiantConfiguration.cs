@@ -18,14 +18,14 @@ namespace TalkBack.Brokers.Network
 {
   public class NetworkParticipiantConfiguration : ParticipiantConfiguration
   {
-    [ConfigurationParameter("port", Converter = typeof(IntConverter))]
+    [ConfigurationParameter ("port", Converter = typeof (IntConverter))]
     public int Port { get; private set; }
+
+    [ConfigurationParameter ("sep")]
+    public string Separator { get; private set; }
 
     [ConfigurationParameter("enc", Converter = typeof(EncodingConverter))]
     public Encoding Encoding { get; private set; }
-
-    [ConfigurationParameter("sep")]
-    public string Separator { get; private set; }
 
     public NetworkParticipiantConfiguration (string configurationString) : base(configurationString)
     {

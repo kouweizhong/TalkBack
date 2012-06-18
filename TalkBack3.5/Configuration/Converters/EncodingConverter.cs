@@ -23,7 +23,7 @@ namespace TalkBack.Configuration.Converters
 
     protected override string ConvertBackInternal(Encoding obj)
     {
-      return obj.EncodingName;
+      return obj.WebName;
     }
   }
 }
