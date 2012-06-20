@@ -19,6 +19,7 @@ namespace Called
         TalkBackChannel.Out.SendDebug ("DEBUG");
         TalkBackChannel.Out.SendWarning ("WARNING");
         TalkBackChannel.Out.SendMessage (new Message (MessageSeverity.Info, "ARGS " + string.Join (" ", args)));
+        TalkBackChannel.Out.SendWarning("L{0}NG", new string('O', 50000));
       }
       else
       {

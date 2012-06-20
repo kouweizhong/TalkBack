@@ -55,30 +55,25 @@ namespace TalkBack.Brokers.Network.Tcp
       return result;
     }
 
-    private void RunServer()
+    private void RunServer ()
     {
-      try
+      var client = _listener.AcceptTcpClient();
+      var ns = client.GetStream();
+      ns.ReadTimeout = 100;
+      while (!_aborted || client.Available > 0)
       {
-        var client = _listener.AcceptTcpClient ();
-        var ns = client.GetStream ();
-        ns.ReadTimeout = 100;
-        while (!_aborted || client.Available > 0)
-        {
-          var lengthBytes = Read(ns, sizeof (int));
+        var lengthBytes = Read(ns, sizeof (int));
 
-          if (lengthBytes == null)
-            break;
+        if (lengthBytes == null)
+          break;
 
-          var length = BitConverter.ToInt32(lengthBytes, 0);
+        var length = BitConverter.ToInt32(lengthBytes, 0);
 
-          var data = Read(ns, length);
-          OnMessage(_serializer.Deserialize(_encoding.GetString(data, 0, length)));
-        }
+        var data = Read(ns, length);
+        OnMessage(_serializer.Deserialize(_encoding.GetString(data, 0, length)));
       }
-      catch (ThreadAbortException)
-      {
-        
-      }
+
+      client.Close();
     }
 
     public override void OnStartSender ()

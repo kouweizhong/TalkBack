@@ -36,9 +36,11 @@ namespace TalkBack.Brokers.Network.Udp
 
     public override void SendMessage(Message message)
     {
-      var data = _encoding.GetBytes((string) _serializer.Serialize(message));
+      var messageString = (string) _serializer.Serialize (message);
+      var length = _encoding.GetByteCount (messageString);
+      var data = _encoding.GetBytes(messageString);
       
-      _client.Send(data, data.Length, _serverEndPoint);
+      _client.Send(data, length, _serverEndPoint);
     }
 
     protected override void DisposeManagedResources ()

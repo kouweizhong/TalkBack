@@ -37,7 +37,7 @@ namespace TalkBack.Configuration
 
     private static TalkBackConfiguration GetDefaultConfig()
     {
-      return new TalkBackConfiguration {Identifier = "xmlFile", Options = "path=${temp}"};
+      return new TalkBackConfiguration { Identifier = "udp", Options = "port=0,enc=ASCII,sep=:" };
     }
   }
 }

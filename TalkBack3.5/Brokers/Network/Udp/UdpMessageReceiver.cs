@@ -18,13 +18,14 @@ using TalkBack.Serializers;
 
 namespace TalkBack.Brokers.Network.Udp
 {
-  [MessageParticipiant ("udp", typeof (NetworkParticipiantConfiguration))]
+  [MessageParticipiant("udp", typeof (NetworkParticipiantConfiguration))]
   public class UdpMessageReceiver : MessageReceiver
   {
-    private readonly Thread _serverThread;
-    private readonly UdpClient _server;
     private readonly Encoding _encoding;
     private readonly StringMessageSerializer _serializer;
+    private readonly UdpClient _server;
+    private readonly Thread _serverThread;
+    private bool _aborted;
 
     public UdpMessageReceiver(NetworkParticipiantConfiguration configuration)
     {
@@ -36,33 +37,27 @@ namespace TalkBack.Brokers.Network.Udp
 
     private void RunServer()
     {
-      try
-      {
-        var sender = new IPEndPoint (IPAddress.Any, 0);
+      var sender = new IPEndPoint(IPAddress.Any, 0);
 
-        while (true)
-        {
-          byte[] data = _server.Receive(ref sender);
-
-          string message = _encoding.GetString(data);
-          OnMessage(_serializer.Deserialize(message));
-        }
-      }
-      catch (ThreadAbortException)
+      while (!_aborted || _server.Available > 0)
       {
-        
+        byte[] data = _server.Receive(ref sender);
+
+        string message = _encoding.GetString(data);
+        OnMessage(_serializer.Deserialize(message));
       }
+
+      _server.Close();
     }
 
-    public override void OnStartSender ()
+    public override void OnStartSender()
     {
       _serverThread.Start();
     }
 
-    public override void OnEndSender ()
+    public override void OnEndSender()
     {
-      _serverThread.Abort();
-      _server.Close();
+      _aborted = true;
     }
 
     public override string BuildSenderConfig()
