@@ -24,7 +24,7 @@ namespace TalkBack
 
     private static readonly IMessageParticipiantContainer<IMessageReceiver> ReceiverContainer = new ReflectionMessageParticipiantContainer<IMessageReceiver>();
 
-    public static void Process(string executablePath, string arguments, Action<Message> callback)
+    public static int Process(string executablePath, string arguments, Action<Message> callback)
     {
       string identifier = TalkBackConfiguration.Configuration.Identifier;
       string config = TalkBackConfiguration.Configuration.Options;
@@ -50,13 +50,13 @@ namespace TalkBack
       receiver.OnStartSender();
       process.Start();
       process.WaitForExit();
-
 #if DEBUG
       Console.WriteLine(process.StandardOutput.ReadToEnd());
       Console.Error.WriteLine(process.StandardOutput.ReadToEnd());
 #endif
 
       receiver.OnEndSender();
+      return process.ExitCode;
     }
 
     private static string BuildArguments(string arguments, string identifier, string config)
