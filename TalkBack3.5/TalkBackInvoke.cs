@@ -32,12 +32,14 @@ namespace TalkBack
       var receiver = ReceiverContainer.GetMessageParticipiant (identifier, config);
       receiver.SetCallback (callback);
 
+      var builtArguments = BuildArguments (arguments, identifier, receiver.BuildSenderConfig());
+
       var process = new Process
                       {
                         StartInfo =
                           {
                             FileName = executablePath,
-                            Arguments = BuildArguments(arguments, identifier, receiver.BuildSenderConfig()),
+                            Arguments = builtArguments,
                             UseShellExecute = false,
                             CreateNoWindow = true,
 #if DEBUG
@@ -47,13 +49,19 @@ namespace TalkBack
                           }
                       };
 
+      Console.WriteLine ("TalkBack: Starting process '{0}' with arguments '{1}'...", executablePath, builtArguments);
+
       receiver.OnStartSender();
       process.Start();
-      process.WaitForExit();
-#if DEBUG
+
+ #if DEBUG
+      // According to docs, ReadToEnd must be called before WaitForExit to avoid deadlocks
       Console.WriteLine(process.StandardOutput.ReadToEnd());
-      Console.Error.WriteLine(process.StandardOutput.ReadToEnd());
+      Console.Error.WriteLine(process.StandardError.ReadToEnd());
 #endif
+      process.WaitForExit();
+
+      Console.WriteLine ("TalkBack: Process finished with exit code {0}", process.ExitCode);
 
       receiver.OnEndSender();
       return process.ExitCode;

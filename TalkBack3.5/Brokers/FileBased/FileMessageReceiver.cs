@@ -10,6 +10,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.IO;
 
 namespace TalkBack.Brokers.FileBased
@@ -31,8 +32,15 @@ namespace TalkBack.Brokers.FileBased
 
     public override sealed void OnEndSender ()
     {
-      _stream = _configuration.Path.OpenRead();
-      ProcessFile(_stream);
+      try
+      {
+        _stream = _configuration.Path.OpenRead();
+        ProcessFile (_stream);
+      }
+      catch(Exception ex)
+      {
+        throw new Exception ("Error processing file '" + _configuration.Path + "'.", ex);
+      }
     }
 
     protected abstract void ProcessFile(Stream stream);
