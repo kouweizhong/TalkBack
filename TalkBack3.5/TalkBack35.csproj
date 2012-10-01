@@ -90,7 +90,9 @@
     <None Include="..\TalkBack.snk">
       <Link>TalkBack.snk</Link>
     </None>
-    <None Include="TalkBack35.licenseheader" />
+    <None Include="..\TalkBack35.licenseheader">
+      <Link>TalkBack35.licenseheader</Link>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

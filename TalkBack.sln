@@ -1,12 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalkBack35", "TalkBack3.5\TalkBack35.csproj", "{0DA18CF3-29B5-49C7-BB64-36DF67FF7EBF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{D01C23E8-24CE-4946-997A-05FDB9F9E019}"
 	ProjectSection(SolutionItems) = preProject
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 		TalkBack.snk = TalkBack.snk
+		TalkBack35.licenseheader = TalkBack35.licenseheader
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test Applications", "Test Applications", "{4E467276-F1A7-4CEA-A113-A497207E4500}"
