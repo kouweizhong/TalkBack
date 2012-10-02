@@ -18,7 +18,7 @@ namespace TalkBack.Brokers.FileBased.Text
   public class TextFileMessageReceiver : FileMessageReceiver
   {
     private readonly StringMessageSerializer _serializer;
-    private new readonly TextFileParticipiantConfiguration _configuration;
+    private readonly TextFileParticipiantConfiguration _configuration;
 
     public TextFileMessageReceiver (TextFileParticipiantConfiguration configuration) : base(configuration)
     {
