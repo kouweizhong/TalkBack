@@ -16,5 +16,5 @@ using System.Reflection;
 [assembly: AssemblyCopyright ("Copyright ©  2012")]
 [assembly: AssemblyTrademark ("")]
 
-[assembly: AssemblyVersion ("0.7.4.0")]
-[assembly: AssemblyFileVersion ("0.7.4.0")]
+[assembly: AssemblyVersion ("0.7.5.0")]
+[assembly: AssemblyFileVersion ("0.7.5.0")]
