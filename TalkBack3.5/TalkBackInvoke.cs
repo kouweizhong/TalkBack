@@ -68,7 +68,7 @@ namespace TalkBack
 
     private static string BuildArguments(string arguments, string identifier, string config)
     {
-      return string.Format("{3}{0}-{1} {2}", identifier, config, arguments, Prefix);
+      return string.Format("{3}{0}-\"{1}\" {2}", identifier, config, arguments, Prefix);
     }
 
     public static void Action (Action<IMessageSender> action, Action<Message> callback)
