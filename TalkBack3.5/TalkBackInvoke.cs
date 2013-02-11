@@ -11,6 +11,7 @@
 // limitations under the License.
 using System;
 using System.Diagnostics;
+using System.Threading;
 using TalkBack.Brokers;
 using TalkBack.Brokers.Delegate;
 using TalkBack.Configuration;
@@ -53,10 +54,17 @@ namespace TalkBack
       receiver.OnStartSender();
       process.Start();
 
- #if DEBUG
+#if DEBUG
       // According to docs, ReadToEnd must be called before WaitForExit to avoid deadlocks
-      Console.WriteLine(process.StandardOutput.ReadToEnd());
-      Console.Error.WriteLine(process.StandardError.ReadToEnd());
+      // Parallel threads to prevent mutual blocking (deadlocks)
+      var standardOutputReadToEnd = new Thread (() => Console.WriteLine (process.StandardOutput.ReadToEnd()));
+      standardOutputReadToEnd.Start();
+
+      var standardErrorReadToEnd = new Thread(() => Console.Error.WriteLine(process.StandardError.ReadToEnd()));
+      standardErrorReadToEnd.Start();
+
+      standardOutputReadToEnd.Join();
+      standardErrorReadToEnd.Join();
 #endif
       process.WaitForExit();
 
